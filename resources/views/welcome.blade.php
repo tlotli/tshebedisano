@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,13 +24,12 @@
             <div class="col-md-7">
                 <div class="signin-info">
                     <div class="logopanel">
-                        <h1><span>[</span>  Lebo Add Logo Here <span>]</span></h1>
+                        <img src="{{asset('images/logo.jpg')}}" style="border-radius: 5%" alt="" width="250px" height="250px">
                     </div><!-- logopanel -->
                     <div class="mb20"></div>
-                    <h5><strong>Welcome to GrandSharepoint!</strong></h5>
+                    <h5><strong>Welcome to Tshebedisano Document Management Repository!</strong></h5>
                     <ul>
                         <li><i class="fa fa-arrow-circle-o-right mr5"></i> Manage Your Documents</li>
-                        <li><i class="fa fa-arrow-circle-o-right mr5"></i> Manage Your Contacts</li>
                         <li><i class="fa fa-arrow-circle-o-right mr5"></i> Access Your Documents From Anywhere</li>
                     </ul>
                     <div class="mb20"></div>

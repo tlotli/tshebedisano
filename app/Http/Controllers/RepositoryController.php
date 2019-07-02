@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Log;
 use App\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,21 +17,22 @@ class RepositoryController extends Controller
      * @return \Illuminate\Http\Response
      */
 	public function __construct() {
-		if(!Auth::user()) {
-			return redirect('/');
-		}
+		$this->middleware('auth');
 	}
 
 
 	public function index()
     {
+	    $title = 'Manage Repositories';
+	    $font_style = 'fa fa-folder';
+
 	    $repository = DB::table('users')
 	                     ->join('repositories', 'users.id', '=', 'repositories.user_id')
 	                     ->orderBy('repositories.name' ,'asc')
 	                     ->select('users.*', 'repositories.*')
 	                     ->get();
 
-	    return view('repositories.index' , compact('repository'));
+	    return view('repositories.index' , compact('repository' , 'title' ,'font_style'));
     }
 
     /**
@@ -40,7 +42,9 @@ class RepositoryController extends Controller
      */
     public function create()
     {
-        return view('repositories.create');
+	    $title = 'Manage Repositories';
+	    $font_style = 'fa fa-folder';
+        return view('repositories.create' , compact('title' ,'font_style'));
     }
 
     /**
@@ -62,6 +66,10 @@ class RepositoryController extends Controller
 	    $repository->name = $request->name;
 	    $repository->user_id = Auth::id();
 	    $repository->save();
+
+	    $log = Log::create([
+		    'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . 'Created the following repository ' . $request->name . ' at ' . $repository->created_at ,
+	    ]);
 
 	    Session::flash('success' , 'Repository was successfully added');
 	    return redirect(route('repositories.index'));
@@ -86,8 +94,12 @@ class RepositoryController extends Controller
      */
     public function edit($id)
     {
+
+	    $title = 'Manage Repositories';
+	    $font_style = 'fa fa-folder';
+
         $repository = Repository::find($id);
-        return view('repositories.edit', compact('repository'));
+        return view('repositories.edit', compact('repository' ,'title' ,'font_style'));
     }
 
     /**
@@ -99,6 +111,9 @@ class RepositoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+    	$old_rep = Repository::find($id);
+
 	    $this->validate($request , [
 		    'name' => 'required|unique:repositories',
 	    ],
@@ -110,6 +125,10 @@ class RepositoryController extends Controller
 	    $repository->name = $request->name;
 	    $repository->user_id = Auth::id();
 	    $repository->save();
+
+	    $log = Log::create([
+		    'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . ' Changed the repository name from ' . $old_rep->name . ' to ' . $request->name  . ' at ' . $repository->updated_at ,
+	    ]);
 
 	    Session::flash('success' , 'Repository was successfully updated');
 	    return redirect(route('repositories.index'));

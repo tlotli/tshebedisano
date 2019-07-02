@@ -17,20 +17,21 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct() {
-    	if(!Auth::user()) {
-    		return redirect('/');
-	    }
-    }
+	public function __construct() {
+		$this->middleware('auth');
+	}
 
 	public function index()
     {
+	    $title = 'User Permissions';
+	    $font_style = "fa  fa-users";
+
     	$permissions = DB::table('users')
 	                     ->join('permissions', 'users.id', '=', 'permissions.user_id')
-		                 ->orderBy('permissions.permission_type')
 	                     ->select('users.*', 'permissions.*')
+		                 ->orderBy('permissions.permission_type' , 'ASC')
 	                     ->get();
-        return view('permission.index' , compact('permissions'));
+        return view('permission.index' , compact('permissions' ,'title' , 'font_style'));
     }
 
     /**
@@ -40,7 +41,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('permission.create');
+	    $title = 'User Permissions';
+	    $font_style = "fa  fa-users";
+        return view('permission.create' , compact('title' ,'font_style'));
     }
 
     /**
@@ -87,8 +90,10 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
 	public function edit($id) {
+		$title = 'User Permissions';
+		$font_style = "fa  fa-users";
 		$permission = Permission::where('id' , $id)->first();
-		return view('permission.edit' , compact('permission'));
+		return view('permission.edit' , compact('permission' ,'title' ,'font_style'));
 	}
 
     /**

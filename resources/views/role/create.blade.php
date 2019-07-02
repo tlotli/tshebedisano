@@ -40,8 +40,8 @@
                     </div>
 
                     <div class="col-sm-4 col-md-3 ">
-                        <h5>Contacts Permissions</h5>
-                        @foreach($permissions->where('permission_type' , 'Contact') as $p)
+                        <h5>Repository Permissions</h5>
+                        @foreach($permissions->where('permission_type' , 'Repositories') as $p)
                             <div class="checkbox block">
                                 <label>
                                     <input type="checkbox" name="permission_id[]" value="{{$p->id}}">
@@ -52,8 +52,8 @@
                     </div>
 
                     <div class="col-sm-4 col-md-3 ">
-                        <h5>User Rights</h5>
-                        @foreach($permissions->where('permission_type' , 'Permission') as $p)
+                        <h5>Role Permissions</h5>
+                        @foreach($permissions->where('permission_type' , 'Role') as $p)
                             <div class="checkbox block">
                                 <label>
                                     <input type="checkbox" name="permission_id[]" value="{{$p->id}}">
@@ -64,8 +64,8 @@
                     </div>
 
                     <div class="col-sm-4 col-md-3 ">
-                        <h5>Upload Rights</h5>
-                        @foreach($permissions->where('permission_type' , 'Upload') as $p)
+                        <h5>Document Upload Permissions</h5>
+                        @foreach($permissions->where('permission_type' , 'Document') as $p)
                             <div class="checkbox block">
                                 <label>
                                     <input type="checkbox" name="permission_id[]" value="{{$p->id}}">
@@ -74,6 +74,19 @@
                             </div>
                         @endforeach
                     </div>
+
+                    <div class="col-sm-4 col-md-3 ">
+                        <h5>Logs Permissions</h5>
+                        @foreach($permissions->where('permission_type' , 'Logs') as $p)
+                            <div class="checkbox block">
+                                <label>
+                                    <input type="checkbox" name="permission_id[]" value="{{$p->id}}">
+                                    {{$p->name}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                    
                 </div>
             </div>
             <div class="panel-footer ">

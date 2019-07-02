@@ -7,7 +7,9 @@
 @section('main-section')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="{{route('roles.create')}}" class="btn btn-primary">Add Role <i class="fa fa-plus"></i></a>
+            @can('users.create' , \Illuminate\Support\Facades\Auth::user() )
+                <a href="{{route('user.create')}}" class="btn btn-primary">Add User <i class="fa fa-plus"></i></a>
+            @endcan
         </div>
         <div class="panel-body">
             <br />
@@ -16,7 +18,6 @@
                     <thead>
                     <tr>
                         <th>Full Name</th>
-                        <th>Created By</th>
                         <th>Date Created</th>
                         <th>Action</th>
                     </tr>
@@ -25,13 +26,15 @@
                     @foreach($users as $u)
                         <tr>
                             <td>{{$u->firstname . ' ' . $u->lastname}}</td>
+                            <td>{{ \Illuminate\Support\Carbon::parse($u->created_at)->diffForHumans() }}</td>
                             <td>
+                                @can('users.update' , \Illuminate\Support\Facades\Auth::user() )
+                                    <a href="{{route('user.edit' , ['id' => $u->id])}}" class="btn btn-xs btn-success">Edit</a>
+                                @endcan
 
-                            </td>
-                            <td>{{$u->created_at}}</td>
-                            <td>
-                                <a href="{{route('user.edit' , ['id' => $u->id])}}" class="btn btn-xs btn-success">Edit</a>
-
+                                @can('users.reset' , \Illuminate\Support\Facades\Auth::user() )
+                                    <a href="{{route('reset_user_password' , ['id' => $u->id])}}" class="btn btn-xs btn-warning">Reset Password</a>
+                                @endcan
                                 <form id="delete-role-{{$u->id}}" method="post" action="{{route('roles.destroy' , ['id' => $u->id])}}" style="display: none">
                                     {{csrf_field()}}
                                     {{method_field('DELETE')}}

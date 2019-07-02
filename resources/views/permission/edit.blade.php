@@ -32,19 +32,35 @@
                         <div class="form-group">
                             <label class="control-label">Permission Type</label>
                             <select name="permission_type" class="form-control" id="">
+
                                 @if($permission->permission_type == 'User')
                                  <option value="User" selected>User</option>
                                 @endif
+
+                                @if($permission->permission_type == 'Repositories')
+                                    <option value="Repositories" selected>Repositories</option>
+                                @endif
+
+                                    @if($permission->permission_type == 'Role')
+                                        <option value="Role" selected>Role</option>
+                                    @endif
+
                                 @if($permission->permission_type == 'Permission')
                                         <option value="Permission" selected>Permission</option>
                                 @endif
+
                                 @if($permission->permission_type == 'Contact')
                                         <option value="Contact" selected>Contact</option>
                                 @endif
 
-                                @if($permission->permission_type == 'Upload')
-                                        <option value="Upload" selected>Upload</option>
+                                @if($permission->permission_type == 'Document')
+                                        <option value="Document" selected>Document</option>
                                 @endif
+
+                                @if($permission->permission_type == 'Log')
+                                    <option value="Log" selected>Log</option>
+                                @endif
+
                             </select>
                         </div>
                     </div>

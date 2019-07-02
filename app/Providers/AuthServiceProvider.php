@@ -25,6 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::resource('users' , 'App\Policies\UserPolicy');
+        Gate::resource('repository' , 'App\Policies\RepositoryPolicy');
+        Gate::resource('files' , 'App\Policies\FilePolicy');
+        Gate::resource('roles' , 'App\Policies\RolePolicy');
+        Gate::resource('logs' , 'App\Policies\LogsPolicy');
+	    Gate::define('users.reset' , 'App\Policies\UserPolicy@reset');
+	    Gate::define('files.restore' , 'App\Policies\FilePolicy@restore');
     }
 }

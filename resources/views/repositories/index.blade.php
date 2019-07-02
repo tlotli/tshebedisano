@@ -7,7 +7,9 @@
 @section('main-section')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="{{route('repositories.create')}}" class="btn btn-primary">Add Repository <i class="fa fa-plus"></i></a>
+            @can('repository.create' , \Illuminate\Support\Facades\Auth::user() )
+                <a href="{{route('repositories.create')}}" class="btn btn-primary">Add Repository <i class="fa fa-plus"></i></a>
+            @endcan
         </div>
         <div class="panel-body">
             <br />
@@ -30,8 +32,9 @@
                             </td>
                             <td>{{$r->created_at}}</td>
                             <td>
-                                <a href="{{route('repositories.edit' , ['id' => $r->id])}}" class="btn btn-xs btn-success">Edit</a>
-
+                                @can('repository.update' , \Illuminate\Support\Facades\Auth::user() )
+                                    <a href="{{route('repositories.edit' , ['id' => $r->id])}}" class="btn btn-xs btn-success">Edit</a>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

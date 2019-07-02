@@ -33,9 +33,12 @@
                             <label class="control-label">Permission Type</label>
                             <select name="permission_type" class="form-control" id="">
                                 <option value="User">User</option>
+                                <option value="Repositories">Repositories</option>
+                                <option value="Role">Role</option>
                                 <option value="Permission">Permission</option>
                                 <option value="Contact">Contact</option>
-                                <option value="Upload">Upload</option>
+                                <option value="Document">Document</option>
+                                <option value="Logs">Log</option>
                             </select>
                         </div>
                     </div>

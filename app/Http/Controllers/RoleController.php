@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Log;
 use App\Permission;
 use App\Role;
 use Illuminate\Http\Request;
@@ -16,14 +17,21 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+	public function __construct() {
+		$this->middleware('auth');
+	}
+
     public function index()
     {
+	    $title = 'Manage Roles';
+	    $font_style = 'fa fa-lock';
+
 	    $roles = DB::table('users')
 	                     ->join('roles', 'users.id', '=', 'roles.user_id')
 	                     ->select('users.*', 'roles.*')
 	                     ->get();
 
-	    return view('role.index' , compact('roles'));
+	    return view('role.index' , compact('roles' ,'title' ,'font_style'));
     }
 
     /**
@@ -33,6 +41,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+	    $title = 'Create Role';
+	    $font_style = 'fa fa-lock';
+
 	    $permissions = Permission::all();
 	    $permissions_count = Permission::all()->count();
 
@@ -41,9 +52,8 @@ class RoleController extends Controller
 	    	return redirect()->back();
 	    }
 	    else {
-		    return view('role.create' , compact('permissions'));
+		    return view('role.create' , compact('permissions' ,'title' ,'font_style'));
 	    }
-
     }
 
     /**
@@ -68,6 +78,11 @@ class RoleController extends Controller
         $role->name = $request->name;
         $role->slug = str_slug($request->name);
         $role->save();
+
+	    $log = Log::create([
+		    'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . ' Created the following role ' . $role->name . ' ' .  $role->created_at ,
+	    ]);
+
         $role->permissions()->sync($request->permission_id);
         Session::flash('success' , 'User role was created successfully');
         return redirect(route('roles.index'));
@@ -81,7 +96,6 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -92,9 +106,12 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+	    $title = 'Edit Roles';
+	    $font_style = 'fa fa-lock';
+
 	    $role = Role::find($id);
 	    $permissions = Permission::all();
-	    return view('role.edit' , compact('role' ,'permissions'));
+	    return view('role.edit' , compact('role' ,'permissions' ,'title' ,'font_style'));
     }
 
     /**
@@ -107,9 +124,9 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
 
-    	$role = Role::find($id);
+    	$old_role = Role::find($id);
 
-    	if($role->name == $request->name) {
+    	if($old_role->name == $request->name) {
 		    $this->validate($request , [
 			    'name' => 'required',
 			    'permission_id' => 'required',
@@ -124,6 +141,13 @@ class RoleController extends Controller
 		    $role->name = $request->name;
 		    $role->slug = str_slug($request->name);
 		    $role->save();
+
+
+		    $log = Log::create([
+			    'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . ' Updated the following role ' . $old_role->name . ' to ' . $role->name . ' at ' .  $role->updated_at ,
+		    ]);
+
+
 		    $role->permissions()->sync($request->permission_id);
 		    Session::flash('success' , 'User role was successfully updated');
 		    return redirect(route('roles.index'));
@@ -144,6 +168,11 @@ class RoleController extends Controller
 		    $role->name = $request->name;
 		    $role->slug = str_slug($request->name);
 		    $role->save();
+
+		    $log = Log::create([
+			    'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . ' Updated the following role ' . $old_role->name . ' to ' . $role->name . ' at ' .  $role->updated_at ,
+		    ]);
+
 		    $role->permissions()->sync($request->permission_id);
 		    Session::flash('success' , 'User role was successfully updated');
 		    return redirect(route('roles.index'));

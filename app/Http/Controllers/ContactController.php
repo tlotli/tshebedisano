@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
+
+	public function __construct() {
+		$this->middleware('auth');
+	}
+
     /**
      * Display a listing of the resource.
      *
@@ -58,6 +64,10 @@ class ContactController extends Controller
         $contact->linkedin = $request->linkedin;
         $contact->user_id = Auth::id();
         $contact->save();
+
+        $log = Log::create([
+        	'log' => Auth::user()->firstname . ' ' . Auth::user()->lastname . 'Created the following contact ' . $contact->company_name  . ' at ' . $contact->created_at,
+        ]);
 
         Session::flash('success' ,'Contact was successfully updated');
         return redirect(route('contacts.index'));

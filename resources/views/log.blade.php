@@ -6,51 +6,23 @@
 
 @section('main-section')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @can('roles.create' , \Illuminate\Support\Facades\Auth::user() )
-                <a href="{{route('roles.create')}}" class="btn btn-primary">Add Role <i class="fa fa-plus"></i></a>
-            @endcan
-        </div>
+
         <div class="panel-body">
             <br />
             <div class="table-responsive">
                 <table class="table table-striped" id="table2">
                     <thead>
                     <tr>
-                        <th>Permission Name</th>
-                        <th>Created By</th>
-                        <th>Date Created</th>
-                        <th>Action</th>
+                        <th>#</th>
+                        <th>Log Detail</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($roles as $r)
+                    @foreach($logs as $l)
                         <tr>
-                            <td>{{$r->name}}</td>
+                            <td>{{$loop->index + 1}}</td>
                             <td>
-                                {{$r->firstname . ' ' . $r->lastname}}
-                            </td>
-                            <td>{{\Carbon\Carbon::parse($r->created_at)->diffForHumans()}}</td>
-                            <td>
-
-                                @can('roles.update' , \Illuminate\Support\Facades\Auth::user() )
-                                    <a href="{{route('roles.edit' , ['id' => $r->id])}}" class="btn btn-xs btn-success">Edit</a>
-                                @endcan
-
-                                <form id="delete-role-{{$r->id}}" method="post" action="{{route('roles.destroy' , ['id' => $r->id])}}" style="display: none">
-                                    {{csrf_field()}}
-                                    {{method_field('DELETE')}}
-                                </form>
-
-
-                                <a href="" class="btn btn-xs btn-danger"
-                                   onclick="if(confirm('Are you sure you want to delete role ?')) {
-                                           event.preventDefault(); document.getElementById('delete-role-{{$r->id}}').submit();
-                                           }
-                                           else{event.preventDefault();
-                                           }">
-                                    Delete
-                                </a>
+                                {{$l->log}}
                             </td>
                         </tr>
                     @endforeach
