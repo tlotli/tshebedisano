@@ -35,19 +35,19 @@
                                 @can('users.reset' , \Illuminate\Support\Facades\Auth::user() )
                                     <a href="{{route('reset_user_password' , ['id' => $u->id])}}" class="btn btn-xs btn-warning">Reset Password</a>
                                 @endcan
-                                <form id="delete-role-{{$u->id}}" method="post" action="{{route('roles.destroy' , ['id' => $u->id])}}" style="display: none">
-                                    {{csrf_field()}}
-                                    {{method_field('DELETE')}}
-                                </form>
+                                {{--<form id="delete-role-{{$u->id}}" method="post" action="{{route('roles.destroy' , ['id' => $u->id])}}" style="display: none">--}}
+                                    {{--{{csrf_field()}}--}}
+                                    {{--{{method_field('DELETE')}}--}}
+                                {{--</form>--}}
 
-                                <a href="" class="btn btn-xs btn-danger"
-                                   onclick="if(confirm('Are you sure you want to delete user ?')) {
-                                           event.preventDefault(); document.getElementById('delete-role-{{$u->id}}').submit();
-                                           }
-                                           else{event.preventDefault();
-                                           }">
-                                    Delete
-                                </a>
+                                {{--<a href="" class="btn btn-xs btn-danger"--}}
+                                   {{--onclick="if(confirm('Are you sure you want to delete user ?')) {--}}
+                                           {{--event.preventDefault(); document.getElementById('delete-role-{{$u->id}}').submit();--}}
+                                           {{--}--}}
+                                           {{--else{event.preventDefault();--}}
+                                           {{--}">--}}
+                                    {{--Delete--}}
+                                {{--</a>--}}
                             </td>
                         </tr>
                     @endforeach
